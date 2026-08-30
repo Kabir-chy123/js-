@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Restaurant App</title>
+
+    <style>
+      body {
+        font-family: Arial;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        border: 1px solid black;
+        padding: 10px;
+      }
+
+      .highlight {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Restaurants</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Company</th>
+        </tr>
+      </thead>
+
+      <tbody id="restaurantTable"></tbody>
+    </table>
+
+    <dialog id="restaurantModal"></dialog>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
