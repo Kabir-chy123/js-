@@ -11,7 +11,7 @@ async function createUser() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'reqres-free-v1',
+        'x-api-key': 'free_user_3Ifc3SBshel88zcCS3vzyn6wMe7',
       },
       body: JSON.stringify(user),
     });
@@ -20,7 +20,7 @@ async function createUser() {
 
     console.log(data);
   } catch (error) {
-    console.error('Error:', error);
+    console.log('Something went wrong');
   }
 }
 

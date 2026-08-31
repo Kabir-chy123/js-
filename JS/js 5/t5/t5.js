@@ -6,83 +6,79 @@ const modal = document.querySelector('#restaurant-modal');
 const modalContent = document.querySelector('#modal-content');
 const closeModal = document.querySelector('#close-modal');
 
-// Get all restaurants from API
+// get restaurants
 async function getRestaurants() {
   try {
     const response = await fetch(restaurantURL);
 
     if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
+      throw new Error('Could not get restaurants');
     }
 
     const restaurants = await response.json();
 
-    // Sort restaurants alphabetically
     restaurants.sort((a, b) => a.name.localeCompare(b.name));
 
     displayRestaurants(restaurants);
   } catch (error) {
-    console.error('Error loading restaurants:', error);
+    console.log(error);
 
     restaurantList.innerHTML =
-      '<p>Could not load restaurants. Make sure you are connected to Metropolia network or VPN.</p>';
+      '<p>Could not load restaurants. Check VPN or school network.</p>';
   }
 }
 
-// Display restaurants
+// show restaurants
 function displayRestaurants(restaurants) {
   restaurantList.innerHTML = '';
 
   restaurants.forEach((restaurant) => {
-    const restaurantDiv = document.createElement('div');
+    const div = document.createElement('div');
 
-    restaurantDiv.classList.add('restaurant');
+    div.classList.add('restaurant');
 
-    restaurantDiv.innerHTML = `
+    div.innerHTML = `
       <h2>${restaurant.name}</h2>
       <p>${restaurant.address}</p>
     `;
 
-    restaurantDiv.addEventListener('click', () => {
-      selectRestaurant(restaurant, restaurantDiv);
+    div.addEventListener('click', () => {
+      showRestaurant(restaurant, div);
     });
 
-    restaurantList.appendChild(restaurantDiv);
+    restaurantList.appendChild(div);
   });
 }
 
-// Restaurant clicked
-async function selectRestaurant(restaurant, element) {
-  // Remove previous highlight
+// restaurant clicked
+async function showRestaurant(restaurant, element) {
   document.querySelectorAll('.restaurant').forEach((item) => {
     item.classList.remove('highlight');
   });
 
-  // Highlight selected restaurant
   element.classList.add('highlight');
 
   try {
-    // Fetch today's menu
     const menuURL = `https://media2.edu.metropolia.fi/restaurant/api/v1/restaurants/daily/${restaurant._id}/en`;
 
     const response = await fetch(menuURL);
 
     if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
+      throw new Error('Could not get menu');
     }
 
     const menu = await response.json();
 
-    displayModal(restaurant, menu);
+    showModal(restaurant, menu);
   } catch (error) {
-    console.error('Error loading menu:', error);
+    console.log(error);
 
-    displayModal(restaurant, null);
+    showModal(restaurant, null);
   }
 }
 
-// Display restaurant information + menu
-function displayModal(restaurant, menu) {
+// show modal
+function showModal(restaurant, menu) {
   let menuHTML = '<p>No menu available today.</p>';
 
   if (menu && menu.courses && menu.courses.length > 0) {
@@ -91,9 +87,9 @@ function displayModal(restaurant, menu) {
     menu.courses.forEach((course) => {
       menuHTML += `
         <li>
-          <strong>${course.name}</strong>
-          ${course.price ? `<br>Price: ${course.price}` : ''}
-          ${course.diets ? `<br>Diets: ${course.diets}` : ''}
+          <strong>${course.name}</strong><br>
+          Price: ${course.price || '-'}<br>
+          Diets: ${course.diets || '-'}
         </li>
       `;
     });
@@ -106,11 +102,11 @@ function displayModal(restaurant, menu) {
 
     <h3>Restaurant Information</h3>
 
-    <p><strong>Address:</strong> ${restaurant.address || '-'}</p>
-    <p><strong>Postal code:</strong> ${restaurant.postalCode || '-'}</p>
-    <p><strong>City:</strong> ${restaurant.city || '-'}</p>
-    <p><strong>Phone:</strong> ${restaurant.phone || '-'}</p>
-    <p><strong>Company:</strong> ${restaurant.company || '-'}</p>
+    <p>Address: ${restaurant.address || '-'}</p>
+    <p>Postal code: ${restaurant.postalCode || '-'}</p>
+    <p>City: ${restaurant.city || '-'}</p>
+    <p>Phone: ${restaurant.phone || '-'}</p>
+    <p>Company: ${restaurant.company || '-'}</p>
 
     <h3>Today's Menu</h3>
 
@@ -120,10 +116,9 @@ function displayModal(restaurant, menu) {
   modal.showModal();
 }
 
-// Close modal
+// close modal
 closeModal.addEventListener('click', () => {
   modal.close();
 });
 
-// Start application
 getRestaurants();

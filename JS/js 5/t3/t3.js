@@ -4,19 +4,18 @@ async function getData() {
   try {
     const response = await fetch(requestURL, {
       headers: {
-        'x-api-key': 'reqres-free-v1',
+        'x-api-key': 'free_user_3Ifc3SBshel88zcCS3vzyn6wMe7',
       },
     });
 
     if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+      throw new Error('Request failed');
     }
 
     const data = await response.json();
-
     console.log(data);
   } catch (error) {
-    console.error('An error occurred:', error.message);
+    console.log('Error:', error.message);
   }
 }
 

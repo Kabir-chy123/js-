@@ -4,19 +4,15 @@ async function getUser() {
   try {
     const response = await fetch(requestURL, {
       headers: {
-        'x-api-key': 'reqres-free-v1',
+        'x-api-key': 'free_user_3Ifc3SBshel88zcCS3vzyn6wMe7',
       },
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
 
     const data = await response.json();
 
     console.log(data);
   } catch (error) {
-    console.error('Error fetching user:', error);
+    console.log('Something went wrong');
   }
 }
 
